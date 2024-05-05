@@ -33,5 +33,40 @@
         }
       }
     }
+  },
+  "3.3": {
+    "version": "23.2.7.0",
+    "platforms": {
+      "win": {
+        "ia32": {
+          "url": "https://github.com/particl/particl-core/releases/download/v23.2.7.0/particl-23.2.7.0-win32.zip",
+          "sha256": "1b937e29eb7cec60f984c9b550ffeab5b7f19e6205ea815d1e556a5a0fd115e1"
+        },
+        "x64": {
+          "url": "https://github.com/particl/particl-core/releases/download/v23.2.7.0/particl-23.2.7.0-win64.zip",
+          "sha256": "1f89a8c2890491c2848b2e6d8ca3aaa9d27abd04f41428343950c2816b34341f"
+        }
+      },
+      "osx": {
+        "x64": {
+          "url": "https://github.com/particl/particl-core/releases/download/v23.2.7.0/particl-23.2.7.0-x86_64-apple-darwin18.tar.gz",
+          "sha256": "83b793c9307dea58bce2803ca920376ba4333e53ca516eb994b0ac7917de234c"
+        }
+      },
+      "linux": {
+        "x64": {
+          "url": "https://github.com/particl/particl-core/releases/download/v23.2.7.0/particl-23.2.7.0_nousb-x86_64-linux-gnu.tar.gz",
+          "sha256": "ea12c3f8bdcbbe076438830f94467a1935f277e1f554b49dee61578c9ee5d68c"
+        },
+        "arm64": {
+          "url": "https://github.com/particl/particl-core/releases/download/v23.2.7.0/particl-23.2.7.0_nousb-aarch64-linux-gnu.tar.gz",
+          "sha256": "8586d8307935a6aa33d4c7a5d619d8dc833c4cc0ab92104dc18745d7a68821f7"
+        },
+        "arm": {
+          "url": "https://github.com/particl/particl-core/releases/download/v23.2.7.0/particl-23.2.7.0_nousb-arm-linux-gnueabihf.tar.gz",
+          "sha256": "9c3d51a4f664d3e0ab9c9659d90d6e6e920f08d8897799fa4cea485912fdfaeb"
+        }
+      }
+    }
   }
 }
