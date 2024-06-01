@@ -377,7 +377,7 @@ export class ListingsComponent implements OnInit, OnDestroy {
 
 
   navigateToMarketJoin() {
-    this._router.navigate([this.ROUTE_TO_MARKET_JOIN], {queryParams: {selectedManagementTab: 'browser'}});
+    this._router.navigate([this.ROUTE_TO_MARKET_JOIN], {queryParams: {selectedManagementTab: 'joined'}});
   }
 
   navigateToMarketCreate() {
