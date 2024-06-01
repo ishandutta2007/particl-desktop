@@ -15,7 +15,7 @@ import { WalletURLState } from '../state-store/wallet-store.state';
 
 enum TextContent {
   FETCH_ERROR = 'An error occurred while fetching the transactions',
-  TXID_COPIED = 'TX ID copied to the cliboard',
+  TXID_COPIED = 'Copied to the cliboard',
   TX_ABANDON_SUCCESS = 'Successfully abandoned tx: {txid}',
   TX_ABANDON_ERROR = 'Failed to abandon/cancel that transaction',
 }

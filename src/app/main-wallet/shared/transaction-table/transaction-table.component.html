@@ -29,6 +29,12 @@
           {{ txn.formattedTime }}
         </div>
 
+        <div>
+          <button *ngIf="!txn.isAbandoned && (txn.confirmations === 0) && (txn.category === 'send' || txn.category === 'internal_transfer')" mat-button color="warn" class="small" appDebounceClick (debounceClick)="abandonTransaction(txn.txid)" matTooltip="Abandon this transaction" matTooltipPosition="above">
+            <mat-icon fontIcon="part-error"></mat-icon>
+          </button>
+        </div>
+
         <!-- Category icon -->
         <div class="type">
 
@@ -209,7 +215,7 @@
             </ng-template>
           </th>
           <td>
-            <span class="value enable-select">{{ txn.netAmount}} PART</span>
+            <span class="value enable-select">{{ txn.netAmount }} PART</span>
           </td>
         </tr>
       </table><!-- .tx-details -->
@@ -218,13 +224,17 @@
 
     <mat-action-row class="action-buttons" fxLayout fxLayoutAlign="space-between stretch">
       <div class="left">
-        <button *ngIf="!txn.isAbandoned && (txn.confirmations === 0) && txn.category === 'send'" mat-button color="warn" class="small" appDebounceClick (debounceClick)="abandonTransaction(txn.txid)">
+        <button *ngIf="!txn.isAbandoned && (txn.confirmations === 0) && (txn.category === 'send' || txn.category === 'internal_transfer')" mat-button color="warn" class="small" appDebounceClick (debounceClick)="abandonTransaction(txn.txid)">
           <mat-icon fontIcon="part-error"></mat-icon>
           Abandon This Transaction
         </button>
       </div>
 
       <div class="right">
+        <button mat-button color="basic" class="small" ngxClipboard [cbContent]="txn.address" (click)="copyToClipBoard()">
+          <mat-icon fontIcon="part-copy"></mat-icon>
+          Copy Address
+        </button>
         <button mat-button color="basic" class="small" ngxClipboard [cbContent]="txn.txid" (click)="copyToClipBoard()">
           <mat-icon fontIcon="part-copy"></mat-icon>
           Copy TX ID
