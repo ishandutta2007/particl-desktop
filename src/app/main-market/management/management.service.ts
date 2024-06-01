@@ -281,57 +281,6 @@ export class MarketManagementService {
   }
 
 
-  estimateMarketPromotionFee(marketId: number, durationDays: number): Observable<number> {
-    const marketSettings = this._store.selectSnapshot(MarketState.settings);
-    const usingAnonFees = marketSettings.useAnonBalanceForFees;
-    const usePaidImageMsg = marketSettings.usePaidMsgForImages;
-    const identityId = this._store.selectSnapshot(MarketState.currentIdentity).id;
-    const postParams = [
-      'post',
-      marketId,
-      identityId,
-      durationDays,
-      true,
-      null,
-      usePaidImageMsg,
-      (usingAnonFees ? 'anon' : 'part'),
-      12,
-    ];
-
-    return this._rpc.call('market', postParams).pipe(
-      concatMap((resp: RespItemPost) => {
-        if (isBasicObjectType(resp) && (+resp.fee > 0)) {
-          return of(+resp.fee);
-        }
-        return throwError(typeof resp.error === 'string' && resp.error.includes('utxos') ? 'Insufficient utxos' : 'Invalid Estimation');
-      })
-    );
-  }
-
-
-  promoteMarket(marketId: number, durationDays: number): Observable<boolean> {
-    const marketSettings = this._store.selectSnapshot(MarketState.settings);
-    const usingAnonFees = marketSettings.useAnonBalanceForFees;
-    const usePaidImageMsg = marketSettings.usePaidMsgForImages;
-    const identityId = this._store.selectSnapshot(MarketState.currentIdentity).id;
-    const postParams = [
-      'post',
-      marketId,
-      identityId,
-      durationDays,
-      false,
-      null,
-      usePaidImageMsg,
-      (usingAnonFees ? 'anon' : 'part'),
-      12,
-    ];
-
-    return this._rpc.call('market', postParams).pipe(
-      map((resp) => isBasicObjectType(resp) && (resp.result === 'Sent.'))
-    );
-  }
-
-
   fetchMarketGovernanceDetails(marketId: number): Observable<MarketGovernanceInfo> {
     // we're not retrieving image data, so no need for marketUrl info (which is primarily used for the image processing)
     return this._rpc.call('market', ['get', marketId, false]).pipe(

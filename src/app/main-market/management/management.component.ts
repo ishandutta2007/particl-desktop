@@ -18,7 +18,6 @@ export class ManagementComponent {
 
   readonly tabs: MarketManageTab[] = [
     { title: 'Your Markets', icon: 'part-shop', templ: 'joined'},
-    { title: 'Browser', icon: 'part-globe', templ: 'browser'},
   ];
 
 

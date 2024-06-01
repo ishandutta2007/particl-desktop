@@ -15,8 +15,8 @@ import { MarketManagementService } from '../management.service';
 import { MarketSocketService } from '../../services/market-rpc/market-socket.service';
 import { LeaveMarketConfirmationModalComponent } from './leave-market-modal/leave-market-modal.component';
 import { CategoryEditorModalComponent } from './category-editor-modal/category-editor-modal.component';
-import { PromoteMarketConfirmationModalComponent } from './promote-market-modal/promote-market-modal.component';
 import { MarketGovernanceModalComponent } from '../market-governance-modal/market-governance-modal.component';
+import { JoinWithDetailsModalComponent } from './join-with-details-modal/join-with-details-modal.component';
 import { getValueOrDefault, isBasicObjectType } from '../../shared/utils';
 import { JoinedMarket, GovernanceActions } from '../management.models';
 import { MarketType } from '../../shared/market.models';
@@ -28,8 +28,6 @@ enum TextContent {
   COPIED_TO_CLIPBOARD = 'Copied to clipboard...',
   LEAVE_MARKET_ERROR_GENERIC = 'Error while attempting to leave the market',
   LEAVE_MARKET_ERROR_DEFAULT_MARKET = 'A default market cannot be removed',
-  PROMOTION_SUCCESS = 'Successfully promoted the market!',
-  PROMOTION_ERROR = 'Failed to promote the market',
   GOVERNANCE_ACTION_SUCCESS = 'Successfully actioned the market',
   GOVERNANCE_ACTION_FAILURE = 'Failed to take action on the market. Please try again',
 }
@@ -244,6 +242,10 @@ export class JoinedMarketsComponent implements OnInit, OnDestroy {
     );
   }
 
+  openMarketJoinModal() {
+    this._dialog.open(JoinWithDetailsModalComponent);
+  }
+
 
   actionLeaveMarket(idx: number) {
 
@@ -293,55 +295,6 @@ export class JoinedMarketsComponent implements OnInit, OnDestroy {
     if (market) {
       this.openCategoryModalEditorForMarket(market);
     }
-  }
-
-
-  actionOpenPromoteMarketModal(idx: number): void {
-    if ((idx < 0) || (idx >= this.marketsList.length) || !this.marketsList[idx]) {
-      return;
-    }
-
-    const openModal$ = defer(() => {
-      const market = this.marketsList[idx];
-      const data: GenericModalInfo = {
-        market
-      };
-
-      const _dialog = this._dialog.open(
-        PromoteMarketConfirmationModalComponent,
-        { data }
-      );
-
-      return _dialog.afterClosed().pipe(
-        concatMap((dialogResp) => iif(
-          () => getValueOrDefault(dialogResp, 'number', 0) && (+dialogResp > 0),
-
-          defer(() => this._unlocker.unlock({timeout: 10}).pipe(
-            concatMap((isUnlocked) => iif(
-              () => isUnlocked,
-
-              defer(() => this._manageService.promoteMarket(market.id, dialogResp))
-            ))
-          ))
-        ))
-      );
-    });
-
-    this._unlocker.unlock({timeout: 90}).pipe(
-      concatMap((isUnlocked: boolean) => iif(() => isUnlocked, openModal$))
-    ).subscribe(
-      (isSuccess) => {
-        if (!isSuccess) {
-          this._snackbar.open(TextContent.PROMOTION_ERROR, 'warn');
-          return;
-        }
-
-        this._snackbar.open(TextContent.PROMOTION_SUCCESS);
-        // TODO: add indication of "promotion" here
-      },
-      () => this._snackbar.open(TextContent.PROMOTION_ERROR, 'warn')
-    );
-
   }
 
 
